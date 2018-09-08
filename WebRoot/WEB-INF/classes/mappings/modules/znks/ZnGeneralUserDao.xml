@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.znks.dao.ZnGeneralUserDao">
+    
+	<sql id="znGeneralUserColumns">
+		a.id AS "id",
+		a.user_id AS "user.id",
+		a.zn AS "zn",
+		a.nick_name AS "nickName",
+		a.password AS "password",
+		a.password_encrypt AS "passwordEncrypt",
+		a.sex AS "sex",
+		a.age AS "age",
+		a.head_img AS "headImg",
+		a.phone_number AS "phoneNumber",
+		a.user_type AS "userType",
+		a.signature AS "signature",
+		a.user_describe AS "userDescribe",
+		a.grade AS "grade",
+		a.company AS "company",
+		a.province AS "province",
+		a.city AS "city",
+		a.longitude AS "longitude",
+		a.latitude AS "latitude",
+		a.account_no AS "accountNo",
+		a.account_type AS "accountType",
+		a.additional AS "additional",
+		a.rankings AS "rankings",
+		a.source AS "source",
+		a.status AS "status",
+		a.on_off_line AS "onOffLine",
+		a.created AS "created",
+		a.modified AS "modified",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		u2.name AS "user.name"
+	</sql>
+	
+	<sql id="znGeneralUserJoins">
+		LEFT JOIN sys_user u2 ON u2.id = a.user_id
+	</sql>
+    
+	<select id="get" resultType="ZnGeneralUser">
+		SELECT 
+			<include refid="znGeneralUserColumns"/>
+		FROM zn_general_user a
+		<include refid="znGeneralUserJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ZnGeneralUser">
+		SELECT 
+			<include refid="znGeneralUserColumns"/>
+		FROM zn_general_user a
+		<include refid="znGeneralUserJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ZnGeneralUser">
+		SELECT 
+			<include refid="znGeneralUserColumns"/>
+		FROM zn_general_user a
+		<include refid="znGeneralUserJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO zn_general_user(
+			user_id,
+			zn,
+			nick_name,
+			password,
+			password_encrypt,
+			sex,
+			age,
+			head_img,
+			phone_number,
+			user_type,
+			signature,
+			user_describe,
+			grade,
+			company,
+			province,
+			city,
+			longitude,
+			latitude,
+			account_no,
+			account_type,
+			additional,
+			rankings,
+			source,
+			status,
+			on_off_line,
+			created,
+			modified,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{userId},
+			#{zn},
+			#{nickName},
+			#{password},
+			#{passwordEncrypt},
+			#{sex},
+			#{age},
+			#{headImg},
+			#{phoneNumber},
+			#{userType},
+			#{signature},
+			#{userDescribe},
+			#{grade},
+			#{company},
+			#{province},
+			#{city},
+			#{longitude},
+			#{latitude},
+			#{accountNo},
+			#{accountType},
+			#{additional},
+			#{rankings},
+			#{source},
+			#{status},
+			#{onOffLine},
+			#{created},
+			#{modified},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE zn_general_user SET 	
+			user_id = #{userId},
+			zn = #{zn},
+			nick_name = #{nickName},
+			password = #{password},
+			password_encrypt = #{passwordEncrypt},
+			sex = #{sex},
+			age = #{age},
+			head_img = #{headImg},
+			phone_number = #{phoneNumber},
+			user_type = #{userType},
+			signature = #{signature},
+			user_describe = #{userDescribe},
+			grade = #{grade},
+			company = #{company},
+			province = #{province},
+			city = #{city},
+			longitude = #{longitude},
+			latitude = #{latitude},
+			account_no = #{accountNo},
+			account_type = #{accountType},
+			additional = #{additional},
+			rankings = #{rankings},
+			source = #{source},
+			status = #{status},
+			on_off_line = #{onOffLine},
+			created = #{created},
+			modified = #{modified},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE zn_general_user SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.znks.dao.ZnQuestionsDao">
+    
+	<sql id="znQuestionsColumns">
+		a.id AS "id",
+		a.question_id AS "questionId",
+		a.grade AS "grade",
+		a.subject_id AS "subjectId",
+		a.question_type AS "questionType",
+		a.question_describe AS "questionDescribe",
+		a.option_1 AS "option1",
+		a.option_2 AS "option2",
+		a.option_3 AS "option3",
+		a.option_4 AS "option4",
+		a.option_5 AS "option5",
+		a.option_6 AS "option6",
+		a.option_7 AS "option7",
+		a.option_8 AS "option8",
+		a.option_9 AS "option9",
+		a.option_10 AS "option10",
+		a.tips AS "tips",
+		a.standard_answer AS "standardAnswer",
+		a.difficulty_level AS "difficultyLevel",
+		a.question_value AS "questionValue",
+		a.expert_id AS "expertId",
+		a.expert_zn AS "expertZn",
+		a.status AS "status",
+		a.created AS "created",
+		a.modified AS "modified",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="znQuestionsJoins">
+	</sql>
+    
+	<select id="get" resultType="ZnQuestions">
+		SELECT 
+			<include refid="znQuestionsColumns"/>
+		FROM zn_questions a
+		<include refid="znQuestionsJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ZnQuestions">
+		SELECT 
+			<include refid="znQuestionsColumns"/>
+		FROM zn_questions a
+		<include refid="znQuestionsJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ZnQuestions">
+		SELECT 
+			<include refid="znQuestionsColumns"/>
+		FROM zn_questions a
+		<include refid="znQuestionsJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO zn_questions(
+			question_id,
+			grade,
+			subject_id,
+			question_type,
+			question_describe,
+			option_1,
+			option_2,
+			option_3,
+			option_4,
+			option_5,
+			option_6,
+			option_7,
+			option_8,
+			option_9,
+			option_10,
+			tips,
+			standard_answer,
+			difficulty_level,
+			question_value,
+			expert_id,
+			expert_zn,
+			status,
+			created,
+			modified,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{questionId},
+			#{grade},
+			#{subjectId},
+			#{questionType},
+			#{questionDescribe},
+			#{option1},
+			#{option2},
+			#{option3},
+			#{option4},
+			#{option5},
+			#{option6},
+			#{option7},
+			#{option8},
+			#{option9},
+			#{option10},
+			#{tips},
+			#{standardAnswer},
+			#{difficultyLevel},
+			#{questionValue},
+			#{expertId},
+			#{expertZn},
+			#{status},
+			#{created},
+			#{modified},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE zn_questions SET 	
+			question_id = #{questionId},
+			grade = #{grade},
+			subject_id = #{subjectId},
+			question_type = #{questionType},
+			question_describe = #{questionDescribe},
+			option_1 = #{option1},
+			option_2 = #{option2},
+			option_3 = #{option3},
+			option_4 = #{option4},
+			option_5 = #{option5},
+			option_6 = #{option6},
+			option_7 = #{option7},
+			option_8 = #{option8},
+			option_9 = #{option9},
+			option_10 = #{option10},
+			tips = #{tips},
+			standard_answer = #{standardAnswer},
+			difficulty_level = #{difficultyLevel},
+			question_value = #{questionValue},
+			expert_id = #{expertId},
+			expert_zn = #{expertZn},
+			status = #{status},
+			created = #{created},
+			modified = #{modified},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE zn_questions SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

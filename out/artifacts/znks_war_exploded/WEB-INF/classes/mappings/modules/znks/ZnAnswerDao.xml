@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.znks.dao.ZnAnswerDao">
+    
+	<sql id="znAnswerColumns">
+		a.id AS "id",
+		a.answer_id AS "answerId",
+		a.question_id AS "questionId",
+		a.answer_detail AS "answerDetail",
+		a.user_id AS "user.id",
+		a.user_zn AS "userZn",
+		a.result AS "result",
+		a.expert_id AS "expertId",
+		a.expert_zn AS "expertZn",
+		a.basis AS "basis",
+		a.judge_time AS "judgeTime",
+		a.status AS "status",
+		a.created AS "created",
+		a.modified AS "modified",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		u5.name AS "user.name"
+	</sql>
+	
+	<sql id="znAnswerJoins">
+		LEFT JOIN sys_user u5 ON u5.id = a.user_id
+	</sql>
+    
+	<select id="get" resultType="ZnAnswer">
+		SELECT 
+			<include refid="znAnswerColumns"/>
+		FROM zn_answer a
+		<include refid="znAnswerJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ZnAnswer">
+		SELECT 
+			<include refid="znAnswerColumns"/>
+		FROM zn_answer a
+		<include refid="znAnswerJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ZnAnswer">
+		SELECT 
+			<include refid="znAnswerColumns"/>
+		FROM zn_answer a
+		<include refid="znAnswerJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO zn_answer(
+			answer_id,
+			question_id,
+			answer_detail,
+			user_id,
+			user_zn,
+			result,
+			expert_id,
+			expert_zn,
+			basis,
+			judge_time,
+			status,
+			created,
+			modified,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{answerId},
+			#{questionId},
+			#{answerDetail},
+			#{user.id},
+			#{userZn},
+			#{result},
+			#{expertId},
+			#{expertZn},
+			#{basis},
+			#{judgeTime},
+			#{status},
+			#{created},
+			#{modified},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE zn_answer SET 	
+			answer_id = #{answerId},
+			question_id = #{questionId},
+			answer_detail = #{answerDetail},
+			user_id = #{user.id},
+			user_zn = #{userZn},
+			result = #{result},
+			expert_id = #{expertId},
+			expert_zn = #{expertZn},
+			basis = #{basis},
+			judge_time = #{judgeTime},
+			status = #{status},
+			created = #{created},
+			modified = #{modified},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE zn_answer SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

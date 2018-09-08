@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.znks.dao.ZnExpertUserDao">
+    
+	<sql id="znExpertUserColumns">
+		a.id AS "id",
+		a.expert_id AS "expertId",
+		a.zn AS "zn",
+		a.expert_nick AS "expertNick",
+		a.password AS "password",
+		a.password_encrypt AS "passwordEncrypt",
+		a.head_img AS "headImg",
+		a.phone_number AS "phoneNumber",
+		a.province AS "province",
+		a.city AS "city",
+		a.longitude AS "longitude",
+		a.latitude AS "latitude",
+		a.expert_type AS "expertType",
+		a.level AS "level",
+		a.signature AS "signature",
+		a.user_describe AS "userDescribe",
+		a.account_no AS "accountNo",
+		a.account_type AS "accountType",
+		a.status AS "status",
+		a.on_off_line AS "onOffLine",
+		a.additional AS "additional",
+		a.created AS "created",
+		a.modified AS "modified",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag"
+	</sql>
+	
+	<sql id="znExpertUserJoins">
+	</sql>
+    
+	<select id="get" resultType="ZnExpertUser">
+		SELECT 
+			<include refid="znExpertUserColumns"/>
+		FROM zn_expert_user a
+		<include refid="znExpertUserJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ZnExpertUser">
+		SELECT 
+			<include refid="znExpertUserColumns"/>
+		FROM zn_expert_user a
+		<include refid="znExpertUserJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ZnExpertUser">
+		SELECT 
+			<include refid="znExpertUserColumns"/>
+		FROM zn_expert_user a
+		<include refid="znExpertUserJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO zn_expert_user(
+			expert_id,
+			zn,
+			expert_nick,
+			password,
+			password_encrypt,
+			head_img,
+			phone_number,
+			province,
+			city,
+			longitude,
+			latitude,
+			expert_type,
+			level,
+			signature,
+			user_describe,
+			account_no,
+			account_type,
+			status,
+			on_off_line,
+			additional,
+			created,
+			modified,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{expertId},
+			#{zn},
+			#{expertNick},
+			#{password},
+			#{passwordEncrypt},
+			#{headImg},
+			#{phoneNumber},
+			#{province},
+			#{city},
+			#{longitude},
+			#{latitude},
+			#{expertType},
+			#{level},
+			#{signature},
+			#{userDescribe},
+			#{accountNo},
+			#{accountType},
+			#{status},
+			#{onOffLine},
+			#{additional},
+			#{created},
+			#{modified},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE zn_expert_user SET 	
+			expert_id = #{expertId},
+			zn = #{zn},
+			expert_nick = #{expertNick},
+			password = #{password},
+			password_encrypt = #{passwordEncrypt},
+			head_img = #{headImg},
+			phone_number = #{phoneNumber},
+			province = #{province},
+			city = #{city},
+			longitude = #{longitude},
+			latitude = #{latitude},
+			expert_type = #{expertType},
+			level = #{level},
+			signature = #{signature},
+			user_describe = #{userDescribe},
+			account_no = #{accountNo},
+			account_type = #{accountType},
+			status = #{status},
+			on_off_line = #{onOffLine},
+			additional = #{additional},
+			created = #{created},
+			modified = #{modified},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE zn_expert_user SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

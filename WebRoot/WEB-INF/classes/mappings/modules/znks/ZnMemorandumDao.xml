@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thinkgem.jeesite.modules.znks.dao.ZnMemorandumDao">
+    
+	<sql id="znMemorandumColumns">
+		a.id AS "id",
+		a.question_id AS "questionId",
+		a.answer_id AS "answerId",
+		a.user_id AS "user.id",
+		a.user_zn AS "userZn",
+		a.type AS "type",
+		a.status AS "status",
+		a.created AS "created",
+		a.modified AS "modified",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		u4.name AS "user.name"
+	</sql>
+	
+	<sql id="znMemorandumJoins">
+		LEFT JOIN sys_user u4 ON u4.id = a.user_id
+	</sql>
+    
+	<select id="get" resultType="ZnMemorandum">
+		SELECT 
+			<include refid="znMemorandumColumns"/>
+		FROM zn_memorandum a
+		<include refid="znMemorandumJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="ZnMemorandum">
+		SELECT 
+			<include refid="znMemorandumColumns"/>
+		FROM zn_memorandum a
+		<include refid="znMemorandumJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="ZnMemorandum">
+		SELECT 
+			<include refid="znMemorandumColumns"/>
+		FROM zn_memorandum a
+		<include refid="znMemorandumJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO zn_memorandum(
+			question_id,
+			answer_id,
+			user_id,
+			user_zn,
+			type,
+			status,
+			created,
+			modified,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag
+		) VALUES (
+			#{questionId},
+			#{answerId},
+			#{user.id},
+			#{userZn},
+			#{type},
+			#{status},
+			#{created},
+			#{modified},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE zn_memorandum SET 	
+			question_id = #{questionId},
+			answer_id = #{answerId},
+			user_id = #{user.id},
+			user_zn = #{userZn},
+			type = #{type},
+			status = #{status},
+			created = #{created},
+			modified = #{modified},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks}
+		WHERE id = #{id}
+	</update>
+	
+	<update id="delete">
+		UPDATE zn_memorandum SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>
